@@ -1,13 +1,17 @@
 {
   "name": "@poukk/c-appuccino",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "type": "module",
   "bin": {
-    "cappuccino": "index.js"
+    "cappuccino": "./index.js"
   },
   "description": "A simple CLI tool to init a C project",
   "dependencies": {
     "@clack/prompts": "^0.2.0",
     "picocolors": "^1.0.0"
-  }
+  },
+  "files": [
+    "index.js",
+    "templates/"
+  ]
 }

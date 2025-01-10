@@ -16,15 +16,22 @@ import path from 'node:path';
 import { exec } from 'node:child_process';
 import { promisify } from 'node:util';
 import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 const execAsync = promisify(exec);
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 function loadTemplate(filename) {
-	return fs.readFileSync(
-		path.join(__dirname, 'templates', filename),
-		'utf-8'
-	);
+	try {
+		return fs.readFileSync(
+			path.join(__dirname, 'templates', filename),
+			'utf-8'
+		);
+	} catch (error) {
+		console.error(color.red(`Error loading template ${filename}:`), error.message);
+		throw error;
+	}
 }
 
 async function initGitAndCommit(projectPath) {
