@@ -175,10 +175,11 @@ async function main() {
 	}
 
 	const s = spinner();
-	s.start('Creating project...');
-
 	try {
+
+		s.start('Creating project...');
 		await createProjectStructure(projectName, features);
+		s.stop('Project created');
 
 		if (features.includes('readme')) {
 			fs.writeFileSync(
@@ -194,22 +195,26 @@ async function main() {
 				s.stop('Project created (git initialization failed)');
 				return;
 			}
+			s.stop('Repository initialized.');
+		}
 
-			if (shouldCreateGithubRepo) {
-				s.start('Creating GitHub repository...');
-				const repoCreated = await createGithubRepo(projectName, projectName, isPublicRepo);
-				if (!repoCreated) {
-					s.stop('Project created (GitHub repository creation failed)');
-					return;
-				}
+		if (shouldCreateGithubRepo) {
+			s.start('Creating GitHub repository...');
+			const repoCreated = await createGithubRepo(projectName, projectName, isPublicRepo);
+			if (!repoCreated) {
+				s.stop('Project created (GitHub repository creation failed)');
+				return;
 			}
 		}
 
 		s.stop(`Project ${color.green(projectName)} created successfully`);
+		outro('Setup completed successfully');
+		process.exit(0);
 
 	} catch (error) {
 		s.stop('Failed to create project');
 		console.error(color.red('Error:'), error.message);
+		outro('Setup failed');
 		process.exit(1);
 	}
 }
