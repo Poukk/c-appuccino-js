@@ -1,5 +1,5 @@
 {
-  "name": "capppuccino",
+  "name": "c-appuccino",
   "version": "1.0.0",
   "bin": {
 	"cappuccino": "./index.js"
